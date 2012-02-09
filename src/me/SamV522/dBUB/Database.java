@@ -26,16 +26,17 @@ public class Database {
                 Properties prop = new Properties();
                     prop.setProperty("username", username);
                     prop.setProperty("password", password);
-                    String url = "jdbc://%s:%s/%s";
+                    String url = "jdbc:mysql://%s:%s/%s";
                     url = String.format(url, dbHost, port, databaseName);
+                    pluginLogger.info("Connecting to database:");
                     pluginLogger.info(url);
-                    Connection dbCon = DriverManager.getConnection(url.format(dbHost,  port, databaseName), prop);
+                    Connection dbCon = DriverManager.getConnection(url, prop);
                     dbConnected = true;
             }
         }catch(SQLException e){
             pluginLogger.warning("Database Error: " + e.getMessage());
         }catch(ClassNotFoundException e){
-            pluginLogger.warning("Driver error: "+ e.getMessage());
+            pluginLogger.warning("Driver Error: "+ e.getMessage());
         }
 
         return dbConnected;
