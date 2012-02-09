@@ -29,7 +29,7 @@ public class Database {
                     pluginLogger.info(url);
                     pluginLogger.info("Username: "+username);
                     pluginLogger.info("Password: "+password);
-                    Connection dbCon = DriverManager.getConnection(url, username, password);
+                    Database.dbCon = DriverManager.getConnection(url, username, password);
                     dbConnected = true;
             }
         }catch(SQLException e){
