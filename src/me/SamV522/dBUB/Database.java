@@ -17,6 +17,7 @@ public class Database {
 
     public Boolean connect(String dbHost, String databaseName, String username, String password, String port){
         try{
+            Class.forName("com.mysql.jdbc.Driver");
             if(dbConnected){
                 if(closeConnection()){
                     connect(dbHost, databaseName, username, password, port);   
@@ -33,6 +34,8 @@ public class Database {
             }
         }catch(SQLException e){
             pluginLogger.warning("Database Error: " + e.getMessage());
+        }catch(ClassNotFoundException e){
+            pluginLogger.warning("Driver error: "+ e.getMessage());
         }
 
         return dbConnected;
