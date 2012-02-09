@@ -10,11 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class dBUBLogger {
-    private static Logger log;
-    private static String prefix;
+    private Logger log;
+    private String prefix;
 
-    public void initialize(Logger newLog) {
-        dBUBLogger.log = newLog;
+    public dBUBLogger() {
+        log = Logger.getLogger("Minecraft");
         prefix = "[dBUB] ";
     }
 
@@ -27,7 +27,7 @@ public class dBUBLogger {
     }
 
     public void setPrefix(String prefix) {
-        dBUBLogger.prefix = prefix;
+        prefix = prefix;
     }
 
     public void info(String message) {
