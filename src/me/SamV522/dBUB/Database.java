@@ -19,7 +19,10 @@ public class Database {
         try{
             if(dbConnected){
                 if(closeConnection()){
-                    Properties prop = new Properties();
+                    connect(dbHost, databaseName, username, password, port);   
+                }
+            }else{
+                Properties prop = new Properties();
                     prop.setProperty("username", username);
                     prop.setProperty("password", password);
                     String url = "jdbc://%s:%s/%s";
@@ -27,15 +30,6 @@ public class Database {
                     pluginLogger.info(url);
                     Connection dbCon = DriverManager.getConnection(url.format(dbHost,  port, databaseName), prop);
                     dbConnected = true;
-                }
-            }else{
-                Properties prop = new Properties();
-                prop.setProperty("username", username);
-                prop.setProperty("password", password);
-                String url = "%s:%s/%s";
-                Connection dbCon = DriverManager.getConnection(url.format(dbHost,  port, databaseName), prop);
-                dbConnected = true;
-
             }
         }catch(SQLException e){
             pluginLogger.warning("Database Error: " + e.getMessage());
