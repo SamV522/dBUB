@@ -21,29 +21,13 @@ import java.util.List;
 import java.util.logging.Level;
 
 
-public class GMHook implements Listener {
-    private static GroupManager groupManager;
+public class GMHook {
+    public static GroupManager groupManager;
     private Main plugin;
 
     public GMHook(final Main instance)
     {
         this.plugin = instance;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPluginEnable(final PluginEnableEvent event)
-    {
-        final PluginManager pluginManager = plugin.getServer().getPluginManager();
-        if(event.getPlugin() == pluginManager.getPlugin("GroupManager"))
-        {
-            final Plugin GMplugin = pluginManager.getPlugin("GroupManager");
-
-            if (GMplugin != null && GMplugin.isEnabled())
-            {
-                GMHook.groupManager = (GroupManager)GMplugin;
-                Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
-            }
-        }
     }
 
     public static String getGroup(final Player base)

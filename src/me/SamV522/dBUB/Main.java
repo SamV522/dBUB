@@ -7,12 +7,15 @@ package me.SamV522.dBUB; /**
  * To change this template use File | Settings | File Templates.
  */
 
+import org.anjocaido.groupmanager.GroupManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
     public static dBUBLogger pluginLogger = new dBUBLogger();
@@ -26,11 +29,18 @@ public class Main extends JavaPlugin {
         Config = YamlConfiguration.loadConfiguration(cfgFile);
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(), this);
-        pm.registerEvents(new GMHook(this), this);
         db.connect(Config.getString("database.host"), Config.getString("database.database-name"),
                 Config.getString("database.username"),Config.getString("database.password"),
                 Config.getString("database.port"));
         pluginLogger.info("has been enabled successfully!");
+        Plugin GMplugin = pm.getPlugin("GroupManager");
+
+        if (GMplugin != null && GMplugin.isEnabled())
+        {
+            GMHook.groupManager = (GroupManager)GMplugin;
+            Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
+        }
+
     }
 
     public void onDisable() {
