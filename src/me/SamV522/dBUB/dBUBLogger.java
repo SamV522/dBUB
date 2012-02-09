@@ -13,8 +13,8 @@ public class dBUBLogger {
     private static Logger log;
     private static String prefix;
 
-    public void initialize(Logger newLog) {
-        dBUBLogger.log = newLog;
+    public void initialize() {
+        dBUBLogger.log = Logger.getLogger("Minecraft");
         prefix = "[dBUB] ";
     }
 
