@@ -26,6 +26,7 @@ public class Main extends JavaPlugin {
         Config = YamlConfiguration.loadConfiguration(cfgFile);
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new GMHook(this), this);
         db.connect(Config.getString("database.host"), Config.getString("database.database-name"),
                 Config.getString("database.username"),Config.getString("database.password"),
                 Config.getString("database.port"));

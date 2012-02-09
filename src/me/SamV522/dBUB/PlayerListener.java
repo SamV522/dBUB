@@ -16,14 +16,13 @@ import java.util.logging.Level;
  */
 public class PlayerListener implements Listener{
     private dBUBLogger pluginLogger = Main.pluginLogger;
-    GMHook gmHook = new GMHook((Plugin)this);
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         String preGroup = GMHook.getGroup(event.getPlayer());
         String newGroup = GroupMapping.getGroupFromDb(event.getPlayer());
         if(preGroup != newGroup){
-            gmHook.setGroup(event.getPlayer(), newGroup);
+            GMHook.setGroup(event.getPlayer(), newGroup);
             Main.pluginLogger.log(Level.INFO, "Successfully set user \""+ event.getPlayer().getDisplayName()+
                             "\" to group \""+newGroup+"\"");
         }
