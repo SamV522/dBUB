@@ -1,0 +1,5 @@
+name: "dBUB"
+author: SamV522
+description: "A simple plugin to bridge users groups between an online database and a minecraft server"
+version: "1.0"
+main: me.SamV522.dBUB.Main

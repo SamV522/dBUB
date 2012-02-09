@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: EssentialsGroupManager.jar bukkit-1.1-R3.jar
+Main-Class: me.SamV522.dBUB.Main
+
