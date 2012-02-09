@@ -8,8 +8,10 @@ import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -19,26 +21,28 @@ import java.util.List;
 import java.util.logging.Level;
 
 
-public class GMHook
-{
+public class GMHook implements Listener {
     private static GroupManager groupManager;
-    private Plugin plugin;
+    private Main plugin;
 
-    public GMHook(final Plugin plugin)
+    public GMHook(final Main instance)
     {
-        this.plugin = plugin;
+        this.plugin = instance;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(final PluginEnableEvent event)
     {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
-        final Plugin GMplugin = pluginManager.getPlugin("GroupManager");
-
-        if (GMplugin != null && GMplugin.isEnabled())
+        if(event.getPlugin() == pluginManager.getPlugin("GroupManager"))
         {
-            groupManager = (GroupManager)GMplugin;
-            Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
+            final Plugin GMplugin = pluginManager.getPlugin("GroupManager");
+
+            if (GMplugin != null && GMplugin.isEnabled())
+            {
+                groupManager = (GroupManager)GMplugin;
+                Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
+            }
         }
     }
 
