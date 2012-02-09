@@ -23,14 +23,13 @@ public class Database {
                     connect(dbHost, databaseName, username, password, port);   
                 }
             }else{
-                Properties prop = new Properties();
-                    prop.setProperty("username", username);
-                    prop.setProperty("password", password);
                     String url = "jdbc:mysql://%s:%s/%s";
                     url = String.format(url, dbHost, port, databaseName);
                     pluginLogger.info("Connecting to database:");
                     pluginLogger.info(url);
-                    Connection dbCon = DriverManager.getConnection(url, prop);
+                    pluginLogger.info("Username: "+username);
+                    pluginLogger.info("Password: "+password);
+                    Connection dbCon = DriverManager.getConnection(url, username, password);
                     dbConnected = true;
             }
         }catch(SQLException e){
