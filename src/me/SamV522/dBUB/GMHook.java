@@ -40,7 +40,7 @@ public class GMHook implements Listener {
 
             if (GMplugin != null && GMplugin.isEnabled())
             {
-                groupManager = (GroupManager)GMplugin;
+                GMHook.groupManager = (GroupManager)GMplugin;
                 Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
             }
         }
