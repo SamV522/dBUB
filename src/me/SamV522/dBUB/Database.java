@@ -1,7 +1,6 @@
 package me.SamV522.dBUB;
 
 import java.sql.*;
-import java.util.Properties;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,10 +24,8 @@ public class Database {
             }else{
                     String url = "jdbc:mysql://%s:%s/%s";
                     url = String.format(url, dbHost, port, databaseName);
-                    pluginLogger.info("Connecting to database:");
+                    pluginLogger.info("Connecting to database...");
                     pluginLogger.info(url);
-                    pluginLogger.info("Username: "+username);
-                    pluginLogger.info("Password: "+password);
                     Database.dbCon = DriverManager.getConnection(url, username, password);
                     dbConnected = true;
             }
@@ -36,6 +33,8 @@ public class Database {
             pluginLogger.warning("Database Error: " + e.getMessage());
         }catch(ClassNotFoundException e){
             pluginLogger.warning("Driver Error: "+ e.getMessage());
+        }finally{
+            pluginLogger.info("Connected to database successfully!");
         }
 
         return dbConnected;

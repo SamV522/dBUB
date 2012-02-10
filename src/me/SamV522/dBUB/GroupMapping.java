@@ -2,13 +2,8 @@ package me.SamV522.dBUB;
 
 import org.bukkit.entity.Player;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.*;
-import java.util.Calendar;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 
 /**
@@ -29,15 +24,19 @@ public class GroupMapping {
         {
             //  Which table do the usernames come from?
             String userTable = Main.Config.getString("database.users.table");
+
             //  Which column the username comes from
-            String userColumn = Main.Config.getString("database.users.column");
+            String userColumn = Main.Config.getString("database.users.name-column");
+
             //  Which column the group id comes from
             String groupColumn =Main.Config.getString("database.users.group-column");
+
+            //  The players name as seen in-game.
             String mcIgUser = base.getDisplayName().replace('"', '\"');
+
             if(sameTable){
-                queryString = "SELECT "+groupColumn+" FROM "+userTable+" WHERE "+userColumn+" = "+ mcIgUser;
+                queryString = "SELECT "+groupColumn+" FROM "+userTable+" WHERE "+userColumn+" = \""+mcIgUser+"\"";
                 rs = db.sendQuery(queryString);
-                return rs;
             }else if(!sameTable){
                 //  This value needs to be pulled from the user table in order to match up tables later
                 String matchValue = "";
@@ -58,12 +57,19 @@ public class GroupMapping {
                 try
                 {
                     queryString = "SELECT "+altUserID+","+columnToMatch+
-                            " FROM "+altTable+" WHERE "+columnToMatch+"="+mcIgUser;
+                            " FROM "+altTable+" WHERE "+columnToMatch+"=\""+mcIgUser+"\"";
                     rs = db.sendQuery(queryString);
 
-                    // Recycle the queryString now to get the users group ID!
-                    queryString = "SELECT "+groupColumn+" FROM "+userTable+" WHERE "+userID+"= "+rs.getString("altUserID");
-                    rs = db.sendQuery(queryString);
+                    //  Get the ALT user id from the query we just ran, if it exists
+
+                    if(rs.next())
+                    {
+                        // Recycle the queryString now to get the users group ID!
+                        queryString = "SELECT "+groupColumn+" FROM "+userTable+" WHERE "+userID+"= "+rs.getString("altUserID");
+                        rs = db.sendQuery(queryString);
+                    }else{
+                        //  Either the player doesn't exist in the database, or
+                    }
                 }catch(SQLException e){
                     pluginLogger.warning("Database error:");
                     pluginLogger.warning(e.getMessage());
@@ -72,7 +78,6 @@ public class GroupMapping {
                 getDbMinecraftUser(base, true);
             }
         }
-        
         return rs;
     }
 
@@ -87,15 +92,19 @@ public class GroupMapping {
             String queryString = "";
             ResultSet rs = getDbMinecraftUser(base, Main.Config.getBoolean("database.users.sametable"));
             try{
-                while(rs.next())
+                if(rs.next())
                 {
+                    //  The user exists!  Get their group! :D
                     dbGroupID = rs.getString(Main.Config.getString("database.users.group-column"));
+                    retString = Main.Config.getString("group-mapping."+ dbGroupID);
+                }else{
+                    //  Either the user doesn't exist in the database, you're doing something wrong, retrn a null string.
+                    retString = null;
                 }
             }catch(SQLException e){
                 pluginLogger.log(Level.WARNING, "Database error:");
                 pluginLogger.log(Level.WARNING, e.getMessage());
             }
-            retString = Main.Config.getString("group-mapping."+ dbGroupID);
         }else{
             pluginLogger.log(Level.WARNING, "User \""+base.getDisplayName()+
                     "\" connected while Database is not connected!");

@@ -38,7 +38,7 @@ public class Main extends JavaPlugin {
         if (GMplugin != null && GMplugin.isEnabled())
         {
             GMHook.groupManager = (GroupManager)GMplugin;
-            Main.pluginLogger.log(Level.INFO, "Successfully hooked into Group Manager!");
+            Main.pluginLogger.log(Level.INFO, "hooked into Group Manager successfully!");
         }
 
     }
