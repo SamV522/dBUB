@@ -54,8 +54,9 @@ public class Database {
     public ResultSet sendQuery(String dbQuery)
     {
         ResultSet rs = null;
+        Statement stmt = null;
         try{
-            Statement stmt = dbCon.createStatement();
+            stmt = dbCon.createStatement();
             rs = stmt.executeQuery(dbQuery);
         }catch(SQLException e){
             pluginLogger.info("Database Error: "+ e.getMessage());

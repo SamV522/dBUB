@@ -23,10 +23,15 @@ public class GroupMapping {
 
         
         if(db.isConnected()){
-            String queryString = "SELECT "+Main.Config.getString("database.users.group-column")+
-                                 " FROM "+ Main.Config.getString("database.users.table")+" WHERE "+
-                                 Main.Config.getString("database.users.username-column")+" = "+
-                                 base.getDisplayName().replace('"', '\"');
+            String queryString = "";
+            if(Main.Config.getBoolean("database.users.usernames.sametable")){
+                queryString = "SELECT "+Main.Config.getString("database.users.group-column")+
+                        " FROM "+ Main.Config.getString("database.users.table")+" WHERE "+
+                        Main.Config.getString("database.users.usernames.column")+" = "+
+                        base.getDisplayName().replace('"', '\"');
+            }else if(!Main.Config.getBoolean(("database.usernames.sametable"))){
+                queryString = "SELECT * "
+            }
             ResultSet rs = db.sendQuery(queryString);
             try{
                 while(rs.next())
@@ -49,6 +54,6 @@ public class GroupMapping {
     {
         String queryString="UPDATE "+ Main.Config.getString("database.users.table")+
         "SET "+ Main.Config.getString("database.users.group-column")+"="+newGroupID+
-        "WHERE "+ Main.Config.getString("database.users.username-column")+"="+base.getDisplayName();
+        "WHERE "+ Main.Config.getString("database.users.usernames.column")+"="+base.getDisplayName();
     }
 }
