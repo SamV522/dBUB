@@ -21,7 +21,7 @@ public class PlayerListener implements Listener{
         String preGroup = GMHook.getGroup(event.getPlayer());
         String newGroup = GroupMapping.getGroupFromDb(event.getPlayer());
         if(newGroup!=null&&preGroup != newGroup){
-            if(!newGroup == null)
+            if(newGroup != null)
             {
                 GMHook.setGroup(event.getPlayer(), newGroup);
                 Main.pluginLogger.log(Level.INFO, "Successfully set user \""+ event.getPlayer().getDisplayName()+
