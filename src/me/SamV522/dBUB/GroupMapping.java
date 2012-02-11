@@ -16,6 +16,24 @@ public class GroupMapping {
     static Database db = Main.db;
     static dBUBLogger pluginLogger = Main.pluginLogger;
     
+    public static void updateMinecraftUser(Player base)
+    {
+        String preGroup = GMHook.getGroup(base);
+        String newGroup = GroupMapping.getGroupFromDb(base);
+        if(newGroup!=null&&preGroup != newGroup){
+            if(newGroup != null)
+            {
+                GMHook.setGroup(base, newGroup);
+                Main.pluginLogger.log(Level.INFO, "Successfully set user \""+ base.getDisplayName()+
+                        "\" to group \""+newGroup+"\"");
+            }else{
+                GMHook.setGroup(base,  Main.Config.getString("group-mapping.default"));
+                Main.pluginLogger.log(Level.INFO, "User \"" + base.getDisplayName() + "\" was not found in the database. " +
+                        " setting them to the \"" + Main.Config.getString("group-mapping.default") + "\" group");
+            }
+        }
+    }
+    
     private static ResultSet getDbMinecraftUser(Player base, Boolean sameTable)
     {
         ResultSet rs = null;

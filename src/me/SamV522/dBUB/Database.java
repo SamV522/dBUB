@@ -34,7 +34,11 @@ public class Database {
         }catch(ClassNotFoundException e){
             pluginLogger.warning("Driver Error: "+ e.getMessage());
         }finally{
-            pluginLogger.info("Connected to database successfully!");
+            if(dbConnected){
+                pluginLogger.info("Connected to database successfully!");    
+            }else{
+                pluginLogger.info("Unable to connect to database :(");
+            }
         }
 
         return dbConnected;
@@ -67,14 +71,19 @@ public class Database {
         Boolean retBool = false;
         if(dbConnected){
             try{
-                dbCon.close();
-                dbCon = null;
-            }catch(SQLException e){
-                pluginLogger.warning("Could not close active Database connection!");
-            }finally {
-                if(dbCon == null){
-                    retBool = true;
+                if(dbCon != null)
+                {
+                    dbCon.close();
+                    if(dbCon.isClosed()){
+                        dbConnected = false;
+                        retBool = true;
+                    }
+                }else{
+                    pluginLogger.warning("Could not close active Database connection [null]");
                 }
+            }catch(SQLException e){
+                pluginLogger.warning("Database error:");
+                pluginLogger.warning(e.getMessage());
             }
         }else{
             pluginLogger.warning("Could not close active Database connection!  Is it already closed?");
