@@ -76,6 +76,8 @@ public class Database {
                     retBool = true;
                 }
             }
+        }else{
+            pluginLogger.warning("Could not close active Database connection!  Is it already closed?");
         }
         return retBool;
     }

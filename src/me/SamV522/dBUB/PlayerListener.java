@@ -25,7 +25,7 @@ public class PlayerListener implements Listener{
             {
                 GMHook.setGroup(event.getPlayer(), newGroup);
                 Main.pluginLogger.log(Level.INFO, "Successfully set user \""+ event.getPlayer().getDisplayName()+
-                                "\" to group \""+newGroup+"\"");
+                                                  "\" to group \""+newGroup+"\"");
             }
             else
             {

@@ -79,7 +79,7 @@ public class Main extends JavaPlugin {
 
     public void onDisable() {
         pluginLogger.info("has been disabled successfully.");
-        db.closeConnection();
+        Main.db.closeConnection();
     }
 
 }
