@@ -1,13 +1,15 @@
 package me.SamV522.dBUB;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by IntelliJ IDEA.
  * Author: SamV522
  * Date: 9/02/12
  * Time: 12:26 AM
- * To change this template use File | Settings | File Templates.
  */
 public class Database {
     private static Connection dbCon;
@@ -22,7 +24,7 @@ public class Database {
                     connect(dbHost, databaseName, username, password, port);   
                 }
             }else{
-                    String url = "jdbc:mysql://%s:%s/%s";
+                    String url = "jdbc:mysql://%s:%s/%s?autoReconnect=true";
                     url = String.format(url, dbHost, port, databaseName);
                     pluginLogger.info("Connecting to database...");
                     pluginLogger.info(url);
@@ -54,16 +56,32 @@ public class Database {
         return dbConnected;
     }
 
-    public ResultSet sendQuery(String dbQuery)
+    public Object sendQuery(String dbQuery)
     {
-        ResultSet rs = null;
-        try{
-            Statement stmt = dbCon.createStatement();
-            rs = stmt.executeQuery(dbQuery);
-        }catch(SQLException e){
-            pluginLogger.info("Database Error: "+ e.getMessage());
+        return sendQuery(dbQuery, false);
+    }
+
+    public Object sendQuery(String dbQuery, Boolean update)
+    {
+        Object retVal = null;
+        if(update==null)
+        {
+            return sendQuery(dbQuery, false);
+        }else{
+            try{
+                Statement stmt = dbCon.createStatement();
+                if(update)
+                {
+                    retVal = stmt.executeUpdate(dbQuery);
+                }else{
+                    retVal = stmt.executeQuery(dbQuery);
+                }
+            }catch(SQLException e){
+                pluginLogger.warning("Database Error: ");
+                pluginLogger.warning(e.getMessage());
+            }
         }
-        return rs;
+        return retVal;
     }
 
     public Boolean closeConnection()

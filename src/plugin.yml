@@ -1,7 +1,7 @@
 ﻿name: "dBUB"
 author: SamV522
 description: "A simple plugin to bridge users groups between an online database and a minecraft server"
-version: "1.2"
+version: "1.2.3"
 main: me.SamV522.dBUB.Main
 permissions:
     dbub.*:
@@ -11,6 +11,7 @@ permissions:
             dbub.version: true
             dbub.help: true
             dbub.sync: true
+            dbub.syncdb: true
     dbub.reload:
         description: Reloads dBUB
         default: op
@@ -21,10 +22,13 @@ permissions:
         description: "Shows the user their available commands"
         default: op
     dbub.sync:
-        description: "Manually synchronizes the groups on the server"
+        description: "Manually synchronize groups from the database"
         default: op
+    #dbub.syncdb:
+    #   description: "Manually synchronize groups to the database"
+    #   default: op
 commands:
     dbub:
-      description: 'Runs one of the dbub commands'
-      usage: '/dbub [reload/version/help/?/sync]'
+      description: 'Master command for dBUB'
+      usage: '/dbub [reload/version/help/?/sync/syncdb]'
       permission-message: "You don't have <permission>"
